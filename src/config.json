@@ -1,154 +1,98 @@
 {
-  "name": "qa-cli",
+  "name": "restAPI",
   "type": "executer",
-  "description": "Kaholo | QA team | cmd/shell only for test purpose",
+  "description": "Kaholo | Rest API",
   "exposeRoute": false,
   "execProgram": "node",
   "main": "app.js",
   "imgUrl": "logo.png",
-  "version": "1.0.0",
+  "version": "0.3.3",
   "category": "CORE",
-  "keywords": ["CLI", "command", "commandline", "shell", "bash", "script", "code", "Kaholo", "QA"],
+  "keywords": ["restAPI", "axios", "get", "post", "put", "delete", "Kaholo", "QA"],
+  "settings": [
+    {
+      "name":"baseUrl",
+      "viewName": "Base URL",
+      "type": "string",
+      "required": false
+    }
+  ],
   "methods": [
     {
-      "name": "execute",
-      "viewName": "Execute Command",
+      "name": "sendRequest",
+      "viewName": "Send request",
       "params": [
         {
-          "name": "workingDir",
-          "viewName": "Working Directory",
-          "type": "string",
-          "description": "The path in which the command will be executed from.",
-          "placeholder": "/home/username/"
-        },
-        {
-          "name": "COMMANDS",
-          "viewName": "Command",
-          "type": "string",
-          "description": "The command to execute.",
-          "placeholder": "uptime"
-        },
-        {
-          "name": "exitOnClose",
-          "viewName": "Wait For Close",
-          "type": "boolean",
-          "description": "Waiting until the operation is completed before moving on to the next operation."
-        },
-        {
-          "name": "shell",
-          "viewName": "Shell Type",
+          "name": "method",
+          "viewName": "method",
           "type": "options",
-          "description": "For linux specifies whether to use bin/sh or bin/bash as the shell. For windows only default cmd.exe is available.",
-          "placeholder": "bash",
+          "required": true,
+          "description": "Select one of request method. Method GET is default",
           "options": [
             {
-              "id": "default",
-              "name": "Default"
+              "id": "get",
+              "name": "GET"
             },
             {
-              "id": "/bin/sh",
-              "name": "sh"
+              "id": "post",
+              "name": "POST"
             },
             {
-              "id": "/bin/bash",
-              "name": "bash"
+              "id": "delete",
+              "name": "DELETE"
+            },
+            {
+              "id": "put",
+              "name": "PUT"
+            },
+            {
+              "id": "patch",
+              "name": "PATCH"
             }
           ]
-        }
-      ]
-    },
-    {
-      "name": "executeCommands",
-      "viewName": "Execute Multiple Commands",
-      "params": [
+        }, 
         {
-          "name": "COMMANDS",
-          "viewName": "Commands",
-          "type": "text",
-          "description": "The commands to execute. To enter multiple commands seperate each with a new line.",
-          "placeholder": "uptime"
-        }
-      ]
-    },
-    {
-      "name": "remoteCommandExecute",
-      "viewName": "Remote Command Execution",
-      "params": [
-        {
-          "name": "KEY_PATH",
-          "viewName": "Key Path",
+          "name": "url",
+          "viewName": "url",
           "type": "string",
-          "description": "The path of the key to use to authenticate with to remote server using SSH.",
-          "placeholder": "/home/username/.ssh/id_rsa"
+          "description": "Privide full url or path to endpoint if you have set baseUrl in plugin settings",
+          "placeholder": "https://api.chucknorris.io/jokes or /jokes"
         },
         {
-          "name": "REMOTE_USER",
-          "viewName": "Remote User",
+          "name": "headers",
+          "viewName": "headers",
           "type": "string",
-          "description": "The SSH username to use to authenticate to the remote host.",
-          "placeholder": "kaholo1"
+          "description": "Headers passed to request",
+          "placeholder": "e.g. {'X-Requested-With': 'XMLHttpRequest'}"
         },
         {
-          "name": "REMOTE_ADDRESS",
-          "viewName": "Remote Address",
+          "name": "params",
+          "viewName": "params",
           "type": "string",
-          "description": "The URL of the host to execute the command on.",
-          "placeholder": "192.168.10.7"
+          "description": "params passed to request",
+          "placeholder": "e.g. { ID: 12345 }"
         },
         {
-          "name": "port",
-          "viewName": "Port",
+          "name": "data",
+          "viewName": "data",
           "type": "string",
-          "description": "The port used to connect with SSH to the remote host.",
-          "placeholder": "22"
+          "description": "data passed to request in both form object {} or as string e.g. or { firstName: 'Fred'} or 'Country=Brasil&City=Belo Horizonte'",
+          "placeholder": "e.g. { company: Kaholo } or Company=Kaholo&Tool=EasyToUse"
         },
         {
-          "name": "COMMANDS",
-          "viewName": "Command",
-          "type": "string",
-          "description": "The command to execute on the remote host.",
-          "placeholder": "uptime"
-        }
-      ]
-    },
-    {
-      "name": "executeMultiple",
-      "viewName": "Execute Command Multiple Times",
-      "params": [
-        {
-          "name": "COMMANDS",
-          "viewName": "Command",
-          "type": "string",
-          "description": "The command to execute.",
-          "placeholder": "uptime"
+          "name": "timeout",
+          "viewName": "timeout",
+          "type": "int",
+          "description": "specifies the number of milliseconds before the request times out. If the request takes longer than `timeout`, the request will be aborted. Default is `0` (no timeout)",
+          "placeholder": "1000"
         },
         {
-          "name": "numberOfTime",
-          "viewName": "Number Of Times",
+          "name": "auth",
+          "viewName": "auth",
           "type": "string",
-          "description": "Number of times to execute the command.",
-          "placeholder": "5"
-        }
-      ]
-    },
-    {
-      "name": "executeInteractiveWindowsCommand",
-      "viewName": "Execute windows interactive",
-      "params": [
-        {
-          "name": "command",
-          "viewName": "Command",
-          "type": "string",
-          "description": "The command to execute.",
-          "placeholder": "uptime"
-        },
-        {
-          "name": "workingDirectory",
-          "viewName": "Working Directory",
-          "type": "string",
-          "description": "If specified, execute the command from the specified directory.",
-          "placeholder": "c:\\\\work\\"
-        }
+          "description": "indicates that HTTP Basic auth should be used, and supplies credentials. This will set an `Authorization` header, overwriting any existing `Authorization` custom headers you have set using `headers`. Please note that only HTTP Basic auth is configurable through this parameter. For Bearer tokens and such, use `Authorization` custom headers instead.",
+          "placeholder": "e.g. auth: { username: 'janedoe', password: 's00pers3cret'}"
+        }      
       ]
     }
   ]
